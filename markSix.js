@@ -9,7 +9,7 @@ var getLinks = (url) => {
             .get(url)
             .charset('utf8')
             .end((err, res) => {
-                console.log(res);
+                console.log(JSON.parse(res.text));
             });
     });
 }

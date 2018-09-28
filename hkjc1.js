@@ -3,7 +3,7 @@ const charset = require('superagent-charset');
 const request = require('superagent');
 charset(request);
 let hkjcUrl = 'https://bet.hkjc.com/football/getJSON.aspx?jsontype=index.aspx';
-let getLinks = url => {
+let getLinks = function(url) {
   return new Promise(function(resolve, reject) {
     request.get(url).charset('utf8').end((err, res) => {
       resolve(JSON.parse(res.text));
@@ -25,8 +25,8 @@ let jsonHkjcGet = data => {
   //console.log(ans);
   return ans;
 };
-exports.run = function run() {
-  getLinks(hkjcUrl).then(data => {
-    return jsonHkjcGet(data);
-  });
+exports.run = async function (){
+  let data = await getLinks(hkjcUrl);
+  return jsonHkjcGet(data);
 };
+

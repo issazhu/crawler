@@ -1,5 +1,6 @@
 'use strict';
-const { getLinks, getBet_Cheerio } = require('./crawelFrame');
+const suite = new (require('benchmark')).Suite();
+const { getLinks, getBet_Cheerio } = require('./../crawelFrame');
 
 var macauslotConfigUrl =
   'https://web.macauslot.com/content/data/soccer/xml/odds/odds_config.xml';
@@ -29,26 +30,40 @@ var mixBetData = function(obj1, obj2) {
   let arr2 = Object.keys(obj1).map(function(value) {
     return obj2[value].id;
   });
-  arr1.forEach(function(value, index) {
-    Object.assign(obj1[index], obj2[arr2.indexOf(value)]);
+  return arr1.forEach(function(value, index) {
+      let val1=arr2.indexOf(value);
+      let val2=obj2[val1];
+    Object.assign(obj1[index], val2);
   });
   //console.log(obj1);
 };
 var mixBetData2 = function(obj1, obj2) {
-  let arr2 = Object.keys(obj1).map(function(value) {
-    return obj2[value].id;
-  });
-  Object.keys(obj1).forEach(function(value, index) {
-     Object.assign(obj1[index], obj2[arr2.indexOf(obj1[value].id)]);
-  });
-  console.log(obj1);
-  return obj1;
-};
+    let arr2 = Object.keys(obj1).map(function(value) {
+      return obj2[value].id;
+    });
+    Object.keys(obj1).forEach(function(value, index) {
+       Object.assign(obj1[index], obj2[arr2.indexOf(obj1[value].id)]);
+    });
+    return obj1;
+  };
 const run = async function() {
   let configData = await getLinks(macauslotConfigUrl);
   let data = await getLinks(macauslotUrl);
   let configObj = getBet_Cheerio(configData, configMill, 'Fixture');
   let bet = getBet_Cheerio(data, macauslotMill, 'Fixture');
-  return mixBetData2(configObj, bet);
+  suite
+    .add('mixBetData', function() {
+      mixBetData(configObj, bet);
+    })
+    .add('mixBetData2', function() {
+      mixBetData2(configObj, bet);
+    })
+    .on('complete', function() {
+      console.log('result:');
+      this.forEach(function(result) {
+        console.log(result.name, result.count, result.times.elapsed);
+      });
+    })
+    .run();
 };
 run();

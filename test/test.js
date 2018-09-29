@@ -1,4 +1,5 @@
 'use strict';
+const suite = new (require('benchmark')).Suite;
 const { getLinks, getBet_Cheerio } = require('./crawelFrame');
 
 var macauslotConfigUrl =
@@ -34,21 +35,18 @@ var mixBetData = function(obj1, obj2) {
   });
   //console.log(obj1);
 };
-var mixBetData2 = function(obj1, obj2) {
-  let arr2 = Object.keys(obj1).map(function(value) {
-    return obj2[value].id;
-  });
-  Object.keys(obj1).forEach(function(value, index) {
-     Object.assign(obj1[index], obj2[arr2.indexOf(obj1[value].id)]);
-  });
-  console.log(obj1);
-  return obj1;
-};
 const run = async function() {
   let configData = await getLinks(macauslotConfigUrl);
   let data = await getLinks(macauslotUrl);
   let configObj = getBet_Cheerio(configData, configMill, 'Fixture');
   let bet = getBet_Cheerio(data, macauslotMill, 'Fixture');
-  return mixBetData2(configObj, bet);
+  suite.add('mixBetData',function(){
+      mixBetData(configObj, bet);
+  }).on('complete',function(){
+      console.log('result:');
+      this.forEach(function(result){
+          console.log(result.name,result.count,result.times.elapsed );
+      });
+  })
 };
 run();

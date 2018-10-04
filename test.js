@@ -1,2 +1,2 @@
 const bet=require("./betStrategies");
-bet.run("hkjc");
+bet.run("url_beta");

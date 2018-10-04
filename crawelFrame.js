@@ -32,3 +32,12 @@ exports.getBet_Cheerio = function(data, millPattern, tagName) {
   });
   return betData;
 };
+exports.mixBetData = function(obj1, obj2) {
+  let arr = Object.keys(obj1).map(function(value) {
+    return obj2[value].id;
+  });
+  Object.keys(obj1).forEach(function(value, index) {
+     Object.assign(obj1[index], obj2[arr.indexOf(obj1[value].id)]);
+  });
+  return obj1;
+};

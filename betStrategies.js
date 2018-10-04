@@ -1,6 +1,6 @@
 'use strict';
 const hkjc = require('./betClub/hkjc.js');
-const url_beta = require('./url_beta.js');
+const url_beta = require('./betClub/url_beta.js');
 const macauslot = require('./betClub/macauslot.js');
 //用策略模式引用所有网页借口
 const Strategies = function() {};

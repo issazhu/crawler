@@ -37,7 +37,7 @@ exports.mixBetData = function(obj1, obj2) {
     return obj2[value].id;
   });
   Object.keys(obj1).forEach(function(value, index) {
-     Object.assign(obj1[index], obj2[arr.indexOf(obj1[value].id)]);
+    Object.assign(obj1[index], obj2[arr.indexOf(obj1[value].id)]);
   });
   return obj1;
 };

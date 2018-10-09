@@ -1,2 +1,2 @@
 const bet=require("./betStrategies");
-bet.run("url_beta");
+bet.run("bet22");

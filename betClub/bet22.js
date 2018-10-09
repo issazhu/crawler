@@ -4,6 +4,13 @@ const { getLinks, getBet } = require('../crawelFrame');
 var bet22Url =
   'https://22bet.com/LineFeed/Get1x2_VZip?sports=1&count=2000&lng=en&tz=8&mode=4&partner=151&getEmpty=true';
 
+var configMill = function() {
+  let betData = new Object();
+  betData.id = this.attr('id');
+  betData.homeTeam = this.attr('eh');
+  betData.awayTeam = this.attr('ea');
+  return betData;
+};
 var bet22Mill = function() {
   let betData = new Object();
   betData.homeTeam = this.O1;
